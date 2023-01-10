@@ -1,12 +1,28 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/no-unescaped-entities */
+import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
-import { About, Contact, Experience, Header, Hero, Projects, Skills } from '../components'
+import { About, Contact, Experiences, Header, Hero, Projects, Skills } from '../components'
+import { urlFor } from '../sanity';
+import { PageInfo, Project, Skill, Social, Experience } from '../types';
+import { fetchExperiences } from '../utils/fetchExperiences'
+import { fetchPageInfo } from '../utils/fetchPageInfo'
+import { fetchProjects } from '../utils/fetchProjects'
+import { fetchSkills } from '../utils/fetchSkills'
+import { fetchSocials } from '../utils/fetchSocials'
 
-export default function Home() {
+type Props = {
+  pageInfo : PageInfo
+  experiences : Experience[]
+  skills : Skill[]
+  projects : Project[]
+  socials : Social[]
+}
+
+export default function Home({ pageInfo, experiences, skills, projects, socials }: Props) {
   return (
-    <div className='h-screen bg-[#fff] snap-y snap-mandatory overflow-y-scroll z-0 overflow-x-hidden scrollbar scrollbar-track-white scrollbar-thumb-black'>
+    <div className='h-screen bg-[#E4F7F8] snap-y snap-mandatory overflow-y-scroll z-0 overflow-x-hidden scrollbar scrollbar-track-[#E4F7F8] scrollbar-thumb-[#3B94CB]'>
       <Head>
 
         <title>Aymen's Portfolio</title>
@@ -18,13 +34,13 @@ export default function Home() {
 
       { /* Header */ }
 
-      <Header/>
+      <Header socials={socials}/>
 
       { /** Hero */ }
 
       <section id='hero' className='snap-start'>
 
-        <Hero/>
+        <Hero pageInfo={pageInfo}/>
 
       </section>
 
@@ -32,7 +48,7 @@ export default function Home() {
 
       <section id='about' className='snap-center'>
 
-        <About/>
+        <About pageInfo={pageInfo}/>
 
       </section>
 
@@ -40,7 +56,7 @@ export default function Home() {
 
       <section id='experience' className='snap-center'>
 
-        <Experience/>
+        <Experiences experiences={experiences}/>
 
       </section>
 
@@ -48,7 +64,7 @@ export default function Home() {
 
       <section id='skills' className='snap-start'>
 
-        <Skills/>
+        <Skills skills={skills}/>
 
       </section>
 
@@ -56,7 +72,7 @@ export default function Home() {
 
       <section id='projects' className='snap-start'>
 
-        <Projects/>
+        <Projects projects={projects}/>
 
       </section>
 
@@ -71,11 +87,30 @@ export default function Home() {
       <Link href="#hero">
         <footer className='sticky bottom-5 w-full cursor-pointer'>
           <div className='flex items-center justify-center'>
-            <img className='w-10 h-10 rounded-full filter grayscale hover:grayscale-0 cursor-pointer' src={"https://dummyimage.com/720x400"} alt="" />
+            <img className='w-10 h-10 rounded-full filter grayscale hover:grayscale-0 cursor-pointer animate-pulse object-cover' src={urlFor(pageInfo.heroImage).url()} alt="" />
           </div>
         </footer>
       </Link>
 
     </div>
   )
+}
+
+export const getStaticProps : GetStaticProps<Props> = async () => {
+  const pageInfo: PageInfo = await fetchPageInfo()
+  const experiences: Experience[] = await fetchExperiences()
+  const skills: Skill[] = await fetchSkills()
+  const projects: Project[] = await fetchProjects()
+  const socials: Social[] = await fetchSocials()
+
+  return {
+    props: {
+      pageInfo,
+      experiences,
+      skills,
+      projects,
+      socials
+    },
+    revalidate: 10
+  }
 }

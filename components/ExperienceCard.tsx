@@ -1,14 +1,21 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import { motion } from 'framer-motion'
+import { Experience } from '../types'
+import { urlFor } from '../sanity'
+import Image from 'next/image'
+import About from './About';
 
-type Props = {}
+type Props = {
+  experience : Experience
+}
 
-const ExperienceCard = (props: Props) => {
+const ExperienceCard = ({experience}: Props) => {
   return (
-    <article className='flex flex-col rounded-lg items-center space-y-7 flex-shrink-0 w-[500px] md:w-[600px] xl:w-[900px] snap-center bg-[#29292911] p-10 hover:opacity-100 opacity-40 cursor-pointer transition-opacity duration-200 overflow-hidden'>
+    <article className='flex flex-col rounded-lg items-center space-y-7 flex-shrink-0 w-[600px] md:w-[600px] xl:w-[700px] snap-center bg-[#29292911] p-10 hover:opacity-100 opacity-40 cursor-pointer transition-opacity duration-200 overflow-hidden '>
+
       <motion.img
-        src={"https://dummyimage.com/720x400"}
+        src={urlFor(experience?.companyImage).url()}
         alt="Company"
         className='w-32 h-32 rounded-full xl:w-[200px] xl:h-[200px] object-cover object-center'
         initial={{
@@ -29,31 +36,50 @@ const ExperienceCard = (props: Props) => {
 
       <div className='px-0 md:px-10'>
         <h4 className='text-4xl font-light'>
-          CEO of ME
+          {
+            experience?.jobTitle
+          }
         </h4>
-        <p className='font-bold text-2xl mt-1'>
-          Aymen
+        <p className='font-bold text-2xl mt-1 text-[#2A669F]'>
+          {
+            experience?.company
+          }
         </p>
         <div className='flex space-x-2 my-2'>
           {/** tech used */}
-          <img src={"https://dummyimage.com/720x400"} alt="Tech" className='h-10 w-10 rounded-full object-cover'/>
+          {
+            experience.technologies.map((technology) => (
+              <p
+                key={technology?._id}
+              >
+                {
+                  technology?.title
+                }
+              </p>
+            ))
+          }
         </div>
         <p className='uppercase py-5 text-gray-500'>
-          Started work... - End ...
+          {
+            new Date(experience.dateStarted).toDateString()
+          }
+          {" "}
+          -
+          {" "}
+          {
+            experience.isCurrentlyWorkingHere ? "Present" : new Date(experience.dateEnd).toDateString()
+          }
         </p>
-        <ul className='list-disc space-y-4 text-lg overflow-y-scroll h-[100px] w-full'>
-          <li>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis autem architecto nisi quidem voluptatibus maxime, fugit eum neque nihil repudiandae?
-          </li>
-          <li>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis autem architecto nisi quidem voluptatibus maxime, fugit eum neque nihil repudiandae?
-          </li>
-          <li>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis autem architecto nisi quidem voluptatibus maxime, fugit eum neque nihil repudiandae?
-          </li>
-          <li>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis autem architecto nisi quidem voluptatibus maxime, fugit eum neque nihil repudiandae?
-          </li>
+        <ul className='list-disc space-y-4 text-lg overflow-y-scroll h-[100px] w-full scrollbar-thin scrollbar-track-[#E4F7F8] scrollbar-thumb-[#3B94CB]'>
+          {
+            experience.points?.map((point, index) => (
+              <li
+                key={index}
+              >
+                ➜ {point}
+              </li>
+            ))
+          }
         </ul>
       </div>
     </article>

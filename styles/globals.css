@@ -2,12 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300;400;500;600;700&display=swap');
 @layer components {
   .heroButton{
-    @apply px-6 py-2 border-[#000] rounded-full uppercase text-xs tracking-widest text-gray-500 transition-all hover:border-[#B9E3C6]/40 hover:text-[#000]
+    @apply px-6 py-2 border-[#000] rounded-full uppercase text-xs tracking-widest text-gray-500 transition-all hover:border-[#B9E3C6]/40 hover:text-[#3B94CB]
   }
 
   .contactInput{
     @apply outline-none bg-slate-400/10 rounded-sm border-b px-6 py-6 border-[#242424] text-gray-500 placeholder-gray-500 transition-all focus:border-[#B9E3C6] focus:text-black hover:border-[#B9E3C6] cursor-pointer
   }
+}
+
+*{
+  font-family: 'Josefin Sans', sans-serif;
 }

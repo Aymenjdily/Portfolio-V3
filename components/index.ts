@@ -4,7 +4,7 @@ import Hero from "./Hero";
 
 import About from "./About";
 
-import Experience from "./Experience";
+import Experiences from "./Experiences";
 
 import Skills from "./Skills";
 
@@ -16,7 +16,7 @@ export {
     Header,
     Hero,
     About,
-    Experience,
+    Experiences,
     Skills,
     Projects,
     Contact
